@@ -18,7 +18,6 @@ function transform(arr) {
 		throw new Error("'arr' parameter must be an instance of the Array!")
 	}
 
-	const IGNORE = 'IGNORE'
 	const operations = []
 
 	for (let i = 0; i < arr.length; i += 1) {
@@ -29,7 +28,7 @@ function transform(arr) {
 			continue
 		}
 
-		operations.push(IGNORE)
+		operations.push(0)
 
 		switch (arr[i]) {
 			case '--discard-next':
@@ -67,7 +66,7 @@ function transform(arr) {
 
 	const result = []
 	for (let i = 0; i < arr.length; i += 1) {
-		if (operations[i] === IGNORE || operations[i] <= 0) {
+		if (operations[i] <= 0) {
 			continue
 		}
 
