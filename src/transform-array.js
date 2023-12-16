@@ -18,44 +18,40 @@ function transform(arr) {
 		throw new Error("'arr' parameter must be an instance of the Array!")
 	}
 
-	const operations = []
+	const copies = []
 
 	for (let i = 0; i < arr.length; i += 1) {
 		if (!isControlValue(arr[i])) {
-			if (operations.length === i) {
-				operations.push(1)
+			if (copies.length === i) {
+				copies.push(1)
 			}
 			continue
 		}
 
-		operations.push(0)
+		copies.push(0)
 
 		switch (arr[i]) {
 			case '--discard-next':
 				if (i + 1 < arr.length && !isControlValue(arr[i + 1])) {
-					operations.push(0)
+					copies.push(0)
 				}
 				continue
 
 			case '--discard-prev':
 				if (i - 1 >= 0 && !isControlValue(arr[i - 1])) {
-					operations[i - 1] -= 1
+					copies[i - 1] -= 1
 				}
 				continue
 
 			case '--double-next':
 				if (i + 1 < arr.length && !isControlValue(arr[i + 1])) {
-					operations.push(2)
+					copies.push(2)
 				}
 				continue
 
 			case '--double-prev':
-				if (
-					i - 1 >= 0 &&
-					!isControlValue(arr[i - 1]) &&
-					operations[i - 1] > 0
-				) {
-					operations[i - 1] += 1
+				if (i - 1 >= 0 && !isControlValue(arr[i - 1]) && copies[i - 1] > 0) {
+					copies[i - 1] += 1
 				}
 				continue
 
@@ -66,11 +62,11 @@ function transform(arr) {
 
 	const result = []
 	for (let i = 0; i < arr.length; i += 1) {
-		if (operations[i] <= 0) {
+		if (copies[i] <= 0) {
 			continue
 		}
 
-		result.splice(result.length, 0, ...new Array(operations[i]).fill(arr[i]))
+		result.splice(result.length, 0, ...new Array(copies[i]).fill(arr[i]))
 	}
 
 	return result
